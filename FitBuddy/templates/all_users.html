@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}FitBuddy — Admin{% endblock %}
+{% block content %}
+<section class="result-head">
+  <div>
+    <p class="eyebrow">ADMIN DASHBOARD</p>
+    <h1>Users & plans</h1>
+    <p class="muted">Review stored user profiles and the latest generated plans.</p>
+  </div>
+</section>
+
+{% if not records %}
+  <section class="card"><p>No users have been created yet.</p></section>
+{% endif %}
+
+{% for user, plan in records %}
+<section class="card admin-card">
+  <div class="admin-meta">
+    <div>
+      <h2>{{ user.name }}</h2>
+      <p class="muted">{{ user.user_id }} · Age {{ user.age }} · {{ user.weight }} kg · {{ user.goal|title }} · {{ user.intensity|title }}</p>
+    </div>
+    <time>{{ user.created_at.strftime("%Y-%m-%d %H:%M") }}</time>
+  </div>
+
+  {% if plan %}
+  <div class="admin-grid">
+    <div>
+      <h3>Original plan</h3>
+      <pre class="plan compact">{{ plan.original_plan }}</pre>
+    </div>
+    <div>
+      <h3>Updated plan</h3>
+      <pre class="plan compact">{{ plan.updated_plan or "No update yet." }}</pre>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Your FitBuddy Plan{% endblock %}
+{% block content %}
+<section class="result-head">
+  <div>
+    <p class="eyebrow">YOUR PERSONALIZED PLAN</p>
+    <h1>Hi, {{ user.name }} 👋</h1>
+    <p class="muted">{{ user.goal|title }} · {{ user.intensity|title }} intensity · {{ user.weight }} kg</p>
+  </div>
+  {% if plan_updated %}
+    <div class="badge">✓ Plan updated</div>
+  {% endif %}
+</section>
+
+<div class="grid">
+  <section class="card plan-card">
+    <div class="section-title">
+      <h2>{{ "Updated" if plan_updated else "Original" }} 7-Day Workout Plan</h2>
+      <span>AI generated</span>
+    </div>
+    <pre class="plan">{{ workout_plan }}</pre>
+  </section>
+
+  <aside class="card tip-card">
+    <p class="eyebrow">NUTRITION / RECOVERY</p>
+    <h2>One useful tip</h2>
+    <p>{{ nutrition_tip }}</p>
+  </aside>
+</div>
+
+<section class="card feedback-card">
+  <p class="eyebrow">FEEDBACK LOOP</p>
+  <h2>Want to change the plan?</h2>
+  <p class="muted">Try requests such as “more cardio”, “add another rest day”, or “make the sessions shorter”.</p>
+  <form action="/submit-feedback" method="post">
+    <input type="hidden" name="user_id" value="{{ user.user_id }}">
+    <textarea name="feedback" rows="5" maxlength="1500" required placeholder="Tell FitBuddy what you want to change..."></textarea>
+    <button type="submit">Update My Plan →</button>
+  </form>
+</section>
+
+<div class="actions">
+  <a class="secondary-button" href="/">Create another plan</a>
+  <a class="secondary-button" href="/api/users/{{ user.user_id }}">View JSON</a>
+</div>
+{% endblock %}
